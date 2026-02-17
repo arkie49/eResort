@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard | Kamayan Beach Resort</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" rel="stylesheet" />
+</head>
+<body class="admin-page">
+  <div class="admin-login-overlay" id="adminLoginOverlay">
+    <div class="admin-login-box">
+      <h2>Admin Login</h2>
+      <div class="admin-login-error" id="adminLoginError"></div>
+      <div class="admin-login-field">
+        <label for="adminUsername">Username</label>
+        <input type="text" id="adminUsername" autocomplete="off" />
+      </div>
+      <div class="admin-login-field">
+        <label for="adminPassword">Password</label>
+        <input type="password" id="adminPassword" />
+      </div>
+      <div class="admin-login-actions">
+        <button class="btn" id="adminLoginSubmit">Login</button>
+        <button class="btn btn__secondary" id="adminLoginCancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <main class="admin__container">
+    <!-- Dashboard Header -->
+    <section class="admin__header">
+      <h1>Bookings Management</h1>
+    </section>
+
+    <!-- Filters and Search -->
+    <section class="admin__controls">
+      <div class="controls__group">
+        <input 
+          type="text" 
+          id="searchBooking" 
+          placeholder="Search by name, ID, or email..." 
+          class="search__input"
+        />
+      </div>
+
+      <div class="controls__group">
+        <select id="filterStatus" class="filter__select">
+          <option value="">All Status</option>
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+
+        <select id="filterRoom" class="filter__select">
+          <option value="">All Rooms</option>
+          <option value="standard">Standard</option>
+          <option value="deluxe">Deluxe</option>
+          <option value="family">Family</option>
+        </select>
+
+        <button class="btn__export" id="exportBookings">
+          <i class="ri-download-cloud-2-line"></i> Export
+        </button>
+      </div>
+    </section>
+
+    <!-- Bookings Table -->
+    <section class="admin__bookings">
+      <div class="bookings__table-wrapper">
+        <table class="bookings__table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Guest Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Room Type</th>
+              <th>Check-in</th>
+              <th>Check-out</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="bookingsTableBody">
+            <!-- Bookings will be populated here by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Booking Details Modal -->
+    <div id="bookingModal" class="booking__modal">
+      <div class="booking__modal__content">
+        <div class="booking__modal__header">
+          <h2>Booking Details</h2>
+          <button id="closeBookingModal" class="modal__close-btn">
+            <i class="ri-close-line"></i>
+          </button>
+        </div>
+
+        <div class="booking__modal__body">
+          <div class="modal__section">
+            <h3>Guest Info</h3>
+            <p><strong>Name:</strong> <span id="modalGuestName">-</span></p>
+            <p><strong>Email:</strong> <span id="modalGuestEmail">-</span></p>
+            <p><strong>Phone:</strong> <span id="modalGuestPhone">-</span></p>
+          </div>
+
+          <div class="modal__section">
+            <h3>Reservation Info</h3>
+            <p><strong>Room:</strong> <span id="modalRoomType">-</span></p>
+            <p><strong>Check-in:</strong> <span id="modalCheckIn">-</span></p>
+            <p><strong>Check-out:</strong> <span id="modalCheckOut">-</span></p>
+            <p><strong>Guests:</strong> <span id="modalGuestCount">-</span></p>
+            <p><strong>Total Price:</strong> <span id="modalPrice">-</span></p>
+          </div>
+
+          <div class="modal__section">
+            <h3>Special Requests</h3>
+            <p id="modalRequests">-</p>
+          </div>
+
+        <div class="modal__section">
+          <h3>Update Status</h3>
+          <select id="modalStatus" class="status__select">
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        <div class="modal__actions">
+          <button id="saveChanges" class="btn btn__primary">Save Changes</button>
+          <button id="confirmBookingEmail" class="btn btn__primary">Confirm &amp; Email</button>
+          <button id="deleteBooking" class="btn btn__danger">Delete</button>
+          <button id="closeModalBtn" class="btn btn__secondary">Close</button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+      <div class="footer__bottom">
+        <p>&copy; 2024 Kamayan Beach Resort. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script src="firebase.js"></script>
+  <script src="main.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

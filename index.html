@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <title>eResort</title>
+  </head>
+  <body>
+    <nav>
+      <div class="nav__bar">
+        <div class="nav__header">
+          <div class="logo nav__logo">
+            <div>KBR</div>
+            <span>eResort<br />KAMAYAN BEACH RESORT</span>
+          </div>
+          <div class="nav__menu__btn" id="menu-btn">
+            <i class="ri-menu-line"></i>
+          </div>
+        </div>
+        <ul class="nav__links" id="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="room.html">Rooms</a></li>
+          <li><a href="booking.html">Booking</a></li>
+          <li><a href="#feature">Features</a></li>
+          <li><a href="#news">News</a></li>
+          <li><a href="admin.html">Admin</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <header class="header" id="home">
+      <div class="section__container header__container">
+        <p class="section__subheader">ABOUT US</p>
+        <h1>The Perfect<br />Base For You</h1>
+        <button class="btn">Take A Tour</button>
+      </div>
+    </header>
+
+    <section class="booking">
+      <div class="section__container booking__container">
+        <form action="/">
+          <div class="input__group">
+            <label for="arrival">Arrival Date</label>
+            <input type="date" id="arrival" placeholder="Your Arrival Date" />
+          </div>
+          <div class="input__group">
+            <label for="departure">Departure Date</label>
+            <input type="date" id="departure" placeholder="Your Departure Date" />
+          </div>
+          <div class="input__group">
+            <label for="guests">Number of Guests</label>
+            <select id="guests">
+              <option value="">Select Guests</option>
+              <option value="1">1 Guest</option>
+              <option value="2">2 Guests</option>
+              <option value="3">3 Guests</option>
+              <option value="4">4 Guests</option>
+              <option value="5">5+ Guests</option>
+            </select>
+          </div>
+          <button class="btn">Check Availability</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <div class="section__container about__container">
+        <div class="about__grid">
+          <div class="about__image">
+            <img src="assets/kamayan_logo.jpg" alt="about" />
+          </div>
+          <div class="about__card">
+            <span><i class="ri-user-line"></i></span>
+            <h4>Strong Team</h4>
+            <p>
+              Unlocking Hospitality Excellence And Ensures Your Perfect Stay
+            </p>
+          </div>
+          <div class="about__image">
+            <img src="assets/overview.jpg" alt="about" />
+          </div>
+          <div class="about__card">
+            <span><i class="ri-calendar-check-line"></i></span>
+            <h4>Luxury Room</h4>
+            <p>Experience Unrivaled Luxury at Our Exquisite Luxury Rooms</p>
+          </div>
+        </div>
+        <div class="about__content">
+          <p class="section__subheader">ABOUT US</p>
+          <h2 class="section__header">Where the Earth Meets the Tide</h2>
+          <p class="section__description">
+            Welcome to a coastal sanctuary where tradition, luxury, and the rhythmic pulse of the ocean converge. 
+            Kamayan Beach Resort offers an unparalleled escape from the digital noise, 
+            inviting you to rediscover a world where life is felt through the sand between your toes and the salt on your skin.
+          </p>
+          <button class="btn">Book Now</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="room__container" id="room">
+      <p class="section__subheader">ROOMS</p>
+      <h2 class="section__header">Hand Picked Rooms</h2>
+      <div class="room__grid">
+        <div class="room__card">
+          <img src="assets/standard room.jpg" alt="room" />
+          <div class="room__card__details">
+            <h4>Standard Room (The "Essentials" Stay)</h4>
+            <p>The most budget-friendly option, usually located in a main building or a row of concrete units slightly back from the shore.</p>
+            <h3>P499<span>/night</span></h3>
+          </div>
+        </div>
+        <div class="room__card">
+          <img src="assets/deluxe room.jpg" alt="room" />
+          <div class="room__card__details">
+            <h4>Deluxe Room (The Mid-Tier Upgrade)</h4>
+            <p>Slightly more spacious than the Standard, often with better views or closer proximity to the pool/beach.</p>
+            <h3>P699<span>/night</span></h3>
+          </div>
+        </div>
+        <div class="room__card">
+          <img src="assets/barkada room.jpg" alt="room" />
+          <div class="room__card__details">
+            <h4>Family Room / Barkada Suite</h4>
+            <p>Since Filipino travel culture is very group-oriented, entry-level resorts almost always have "Barkada" (peer group) rooms.</p>
+            <h3>P799-P999<span>/night</span></h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="intro">
+      <div class="section__container intro__container">
+        <div class="intro__cotent">
+          <p class="section__subheader">INTRO VIDEO</p>
+          <h2 class="section__header">Your Tropical Sanctuary Awaits</h2>
+          <p class="section__description">
+          Whether you are seeking a quiet,
+           sun-drenched hideaway or an immersive journey into the heart of island life, 
+           Kamayan Beach Resort promises an unforgettable stay.
+            Here, the gentle lull of the waves and the warmth of our heritage 
+            create a space where true relaxation and island excitement await your arrival.
+          </p>
+          <button class="btn">Book Now</button>
+        </div>
+        <div class="intro__video">
+          <video src="assets/luxury.mp4" autoplay muted loop></video>
+        </div>
+      </div>
+    </section>
+
+    <section class="section__container feature__container" id="feature">
+      <p class="section__subheader">FACILITIES</p>
+      <h2 class="section__header">Core Features</h2>
+      <div class="feature__grid">
+        <div class="feature__card">
+          <span><i class="ri-thumb-up-line"></i></span>
+          <h4>Have High Rating</h4>
+          <p>
+            We take pride in curating a selection of hotels that consistently
+            receive high ratings and positive reviews.
+          </p>
+        </div>
+        <div class="feature__card">
+          <span><i class="ri-time-line"></i></span>
+          <h4>Quite Hours</h4>
+          <p>
+            We understand that peace and uninterrupted rest are essential for a
+            rejuvenating experience.
+          </p>
+        </div>
+        <div class="feature__card">
+          <span><i class="ri-map-pin-line"></i></span>
+          <h4>Best Location</h4>
+          <p>
+            At our hotel booking website, we take pride in offering
+            accommodations in the most prime and sought-after locations.
+          </p>
+        </div>
+        <div class="feature__card">
+          <span><i class="ri-close-circle-line"></i></span>
+          <h4>Free Cancellation</h4>
+          <p>
+            We understand that travel plans can change unexpectedly, which is
+            why we offer the flexibility of free cancellation.
+          </p>
+        </div>
+        <div class="feature__card">
+          <span><i class="ri-wallet-line"></i></span>
+          <h4>Payment Options</h4>
+          <p>
+            Our hotel booking website offers a range of convenient payment
+            options to suit your preferences.
+          </p>
+        </div>
+        <div class="feature__card">
+          <span><i class="ri-coupon-line"></i></span>
+          <h4>Special Offers</h4>
+          <p>
+            Whether you're planning a romantic getaway, or a business trip, our
+            carefully curated special offers cater to all your needs.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section__container news__container" id="news">
+      <div class="news__header">
+        <div>
+          <p class="section__subheader">BLOG</p>
+          <h2 class="section__header">News Feeds</h2>
+        </div>
+        <div class="section__nav">
+          <span><i class="ri-arrow-left-line"></i></span>
+          <span><i class="ri-arrow-right-line"></i></span>
+        </div>
+      </div>
+      <div class="news__grid">
+        <div class="news__card">
+          <div class="news__card__title">
+            <p>25th March 2022</p>
+            <p>By Emily</p>
+          </div>
+          <h4>"Authentic Island Vibes & The Best Boodle Fight!"</h4>
+          <p>
+            "We stayed here for a quick weekend getaway and it was exactly what we needed! If you’re looking for a five-star hotel with gold faucets, this isn't it—but if you want a real Filipino beach experience, this is the place.
+          </p>
+        </div>
+        <div class="news__card">
+          <div class="news__card__title">
+            <p>15th June 2022</p>
+            <p>By David</p>
+          </div>
+          <h4>"Perfect for the Barkada! 🥥"</h4>
+          <p>
+            "We booked the Family Room for a group of 6 and it was surprisingly spacious! We were worried about it being cramped, but the bunk beds were sturdy and the AC was ice cold—super important after a whole day in the sun.
+          </p>
+        </div>
+        <div class="news__card">
+          <div class="news__card__title">
+            <p>08th August 2022</p>
+            <p>By Sarah</p>
+          </div>
+          <h4>"A Hidden Gem for Couples"</h4>
+          <p>
+           "If you want to escape the crowded tourist traps in Boracay or El Nido, Kamayan is the place. It’s an entry-level resort but it has so much heart. We stayed in a Deluxe Room which was just steps from the water.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="section__container footer__container">
+        <div class="footer__col">
+          <div class="logo footer__logo">
+            <div>KBR</div>
+            <span>eResort<br />KAMAYAN BEACH RESORT</span>
+          </div>
+          <p class="section__description">
+           "At Kamayan, we don’t just offer a room; we offer a seat at the table of the elements. Come as a guest, leave as part of the tides."
+          </p>
+          <ul class="footer__socials">
+            <li>
+              <a href="#"><i class="ri-youtube-fill"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="ri-instagram-line"></i></a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/KamayanPenthouseBeachResort"><i class="ri-facebook-fill"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="ri-linkedin-fill"></i></a>
+            </li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Services</h4>
+          <div class="footer__links">
+            <li><a href="#">Online Booking</a></li>
+            <li><a href="#">Special Offers</a></li>
+            <li><a href="#">Customer Support</a></li>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h4>Contact Us</h4>
+          <div class="footer__links">
+            <li>
+              <span><i class="ri-phone-fill"></i></span>
+              <div>
+                <h5>Phone Number</h5>
+                <p>09088124538
+                  09171692377
+                </p>
+              </div>
+            </li>
+            <li>
+              <span><i class="ri-record-mail-line"></i></span>
+              <div>
+                <h5>Email</h5>
+                <p>info@kamayanBR.com</p>
+              </div>
+            </li>
+            <li>
+              <span><i class="ri-map-pin-2-fill"></i></span>
+              <div>
+                <h5>Location</h5>
+                <p>HGXP+JQR kamayan beach resort, Roxas, Oriental Mindoro</p>
+              </div>
+            </li>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bar">
+        Copyright © 2026 eResort. All rights reserved.
+      </div>
+    </footer>
+
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="main.js"></script>
+  </body>
+</html>

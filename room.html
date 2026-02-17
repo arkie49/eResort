@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Rooms & Suites - eResort</title>
+  </head>
+  <body>
+    <nav>
+      <div class="nav__bar">
+        <div class="nav__header">
+          <div class="logo nav__logo">
+            <div>KBR</div>
+            <span>eResort<br />KAMAYAN BEACH RESORT</span>
+          </div>
+          <div class="nav__menu__btn" id="menu-btn">
+            <i class="ri-menu-line"></i>
+          </div>
+        </div>
+        <ul class="nav__links" id="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="room.html">Rooms</a></li>
+          <li><a href="booking.html">Booking</a></li>
+          <li><a href="index.html#feature">Features</a></li>
+          <li><a href="index.html#news">News</a></li>
+          <li><a href="admin.html">Admin</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <header class="header room__header" id="room-header">
+      <div class="section__container header__container">
+        <p class="section__subheader">LUXURIOUS SPACES</p>
+        <h1>Discover Our<br />Premium Rooms</h1>
+        <p class="section__description" style="color: var(--white); max-width: 600px;">
+          Each room is uniquely designed to provide the ultimate comfort and luxury experience for our discerning guests.
+        </p>
+      </div>
+    </header>
+
+    <section class="room__container room__showcase">
+      <p class="section__subheader">OUR COLLECTION</p>
+      <h2 class="section__header">Hand-Picked Rooms</h2>
+      <div class="room__grid">
+        <div class="room__card room__card__large" data-room="standard">
+          <img src="assets/standard room.jpg" alt="Standard Room" />
+          <div class="room__card__details">
+            <div>
+              <h4>Standard Room (The "Essentials" Stay)</h4>
+              <p>The most budget-friendly option, usually located in a main building or a row of concrete units slightly back from the shore.</p>
+            </div>
+            <h3>P499<span>/night</span></h3>
+          </div>
+          <div class="room__card__footer">
+            <button class="btn btn-view-details">View Details</button>
+            <a href="booking.html"><button class="btn">Book Now</button></a>
+          </div>
+        </div>
+        <div class="room__card room__card__large" data-room="deluxe">
+          <img src="assets/deluxe room.jpg" alt="Deluxe Room" />
+          <div class="room__card__details">
+            <div>
+              <h4>Deluxe Room (The Mid-Tier Upgrade)</h4>
+              <p>Slightly more spacious than the Standard, often with better views or closer proximity to the pool/beach.</p>
+            </div>
+            <h3>P699<span>/night</span></h3>
+          </div>
+          <div class="room__card__footer">
+            <button class="btn btn-view-details">View Details</button>
+            <a href="booking.html"><button class="btn">Book Now</button></a>
+          </div>
+        </div>
+        <div class="room__card room__card__large" data-room="family">
+          <img src="assets/barkada room.jpg" alt="Family Room / Barkada Suite" />
+          <div class="room__card__details">
+            <div>
+              <h4>Family Room / Barkada Suite</h4>
+              <p>Since Filipino travel culture is very group-oriented, entry-level resorts almost always have "Barkada" (peer group) rooms.</p>
+            </div>
+            <h3>P799-P999<span>/night</span></h3>
+          </div>
+          <div class="room__card__footer">
+            <button class="btn btn-view-details">View Details</button>
+            <a href="booking.html"><button class="btn">Book Now</button></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="room__details__section">
+      <div class="section__container">
+        <p class="section__subheader">ROOM FEATURES</p>
+        <h2 class="section__header">What's Included</h2>
+        <div class="room__amenities">
+          <div class="amenities__column">
+            <h4><i class="ri-checkbox-circle-line"></i> Standard Amenities</h4>
+            <ul class="amenities__list">
+              <li>Air Conditioning</li>
+              <li>Flat-Screen TV</li>
+              <li>Free Wi-Fi</li>
+              <li>Work Desk</li>
+              <li>Private Bathroom</li>
+              <li>Luxury Bedding</li>
+              <li>Safe</li>
+            </ul>
+          </div>
+          <div class="amenities__column">
+            <h4><i class="ri-checkbox-circle-line"></i> Premium Services</h4>
+            <ul class="amenities__list">
+              <li>24/7 Room Service</li>
+              <li>Housekeeping</li>
+              <li>Laundry Service</li>
+              <li>Wake-Up Service</li>
+              <li>Turndown Service</li>
+              <li>Coffee/Tea Service</li>
+              <li>Newspaper Delivery</li>
+            </ul>
+          </div>
+          <div class="amenities__column">
+            <h4><i class="ri-checkbox-circle-line"></i> Recreation</h4>
+            <ul class="amenities__list">
+              <li>Beach Access</li>
+              <li>Swimming Pool</li>
+              <li>Spa & Wellness</li>
+              <li>Water Sports</li>
+              <li>Dining Options</li>
+              <li>Lounge Areas</li>
+              <li>Entertainment</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="room__comparison">
+      <div class="section__container">
+        <p class="section__subheader">COMPARE ROOMS</p>
+        <h2 class="section__header">Room Specifications</h2>
+        <div class="comparison__table">
+          <table>
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Standard Room</th>
+                <th>Deluxe Room</th>
+                <th>Family Room / Barkada Suite</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Room Size</td>
+                <td>350 sq ft</td>
+                <td>650 sq ft</td>
+                <td>950 sq ft</td>
+              </tr>
+              <tr>
+                <td>Bedrooms</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td>Bathrooms</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+              </tr>
+              <tr>
+                <td>Max Occupancy</td>
+                <td>2-3</td>
+                <td>4-6</td>
+                <td>6-8</td>
+              </tr>
+              <tr>
+                <td>Balcony/Terrace</td>
+                <td>Yes</td>
+                <td>Yes</td>
+                <td>Yes (Large)</td>
+              </tr>
+              <tr>
+                <td>Kitchen</td>
+                <td>Kitchenette</td>
+                <td>Full Kitchen</td>
+                <td>Full Kitchen</td>
+              </tr>
+              <tr>
+                <td>Living Area</td>
+                <td>Bedroom</td>
+                <td>Separate Living</td>
+                <td>Separate Living</td>
+              </tr>
+              <tr>
+                <td>Nightly Rate</td>
+                <td>P499</td>
+                <td>P699</td>
+                <td>P799-P999</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    
+    <section class="cta__section">
+      <div class="section__container">
+        <div class="cta__content">
+          <p class="section__subheader">READY TO BOOK</p>
+          <h2 class="section__header">Start Your Adventure Today</h2>
+          <p class="section__description">
+            Choose your perfect room and experience luxury like never before. Our booking is simple, secure, and instant.
+          </p>
+          <div class="cta__buttons">
+            <a href="booking.html"><button class="btn">Book a Room</button></a>
+            <a href="about.html"><button class="btn btn__secondary">Learn More</button></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Room Detail Modals -->
+    <div id="room-modal" class="room__modal">
+      <div class="room__modal__content">
+        <div class="room__modal__header">
+          <button class="room__modal__back" id="modal-back-btn"><i class="ri-arrow-left-line"></i> Back</button>
+          <span class="room__modal__close">&times;</span>
+        </div>
+        <div class="room__modal__body">
+          <div class="room__modal__images">
+            <img id="modal-main-image" src="assets/standard room.jpg" alt="Room" />
+            <div class="room__modal__thumbnails" id="modal-thumbnails"></div>
+          </div>
+          <div class="room__modal__details">
+            <h2 id="modal-title">Standard Room</h2>
+            <h3 id="modal-price" class="modal-price">P499<span>/night</span></h3>
+            <p id="modal-description"></p>
+            
+            <div class="modal__specs">
+              <h4>Room Specifications</h4>
+              <ul id="modal-specs"></ul>
+            </div>
+            
+            <div class="modal__amenities">
+              <h4>Amenities</h4>
+              <ul id="modal-amenities"></ul>
+            </div>
+            
+            <a href="booking.html"><button class="btn btn-large">Book This Room</button></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="section__container footer__container">
+        <div class="footer__col">
+          <div class="logo footer__logo">
+            <div>KBR</div>
+            <span>eResort<br />KAMAYAN BEACH RESORT</span>
+          </div>
+          <p class="section__description">
+            "At Kamayan, we don’t just offer a room; we offer a seat at the table of the elements. Come as a guest, leave as part of the tides."
+          </p>
+          <ul class="footer__socials">
+            <li>
+              <a href="#"><i class="ri-youtube-fill"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="ri-instagram-line"></i></a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/KamayanPenthouseBeachResort"><i class="ri-facebook-fill"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="ri-linkedin-fill"></i></a>
+            </li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Services</h4>
+          <div class="footer__links">
+            <li><a href="#">Online Booking</a></li>
+            <li><a href="#">Special Offers</a></li>
+            <li><a href="#">Customer Support</a></li>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h4>Contact Us</h4>
+          <div class="footer__links">
+            <li>
+              <span><i class="ri-phone-fill"></i></span>
+              <div>
+                <h5>Phone Number</h5>
+                <p>09088124538
+                  09171692377
+                </p>
+              </div>
+            </li>
+            <li>
+              <span><i class="ri-record-mail-line"></i></span>
+              <div>
+                <h5>Email</h5>
+                <p>info@kamayanBR.com</p>
+              </div>
+            </li>
+            <li>
+              <span><i class="ri-map-pin-2-fill"></i></span>
+              <div>
+                <h5>Location</h5>
+                <p>HGXP+JQR kamayan beach resort, Roxas, Oriental Mindoro</p>
+              </div>
+            </li>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bar">
+        Copyright © 2026 eResort. All rights reserved.
+      </div>
+    </footer>
+
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
