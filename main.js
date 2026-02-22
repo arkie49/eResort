@@ -1,18 +1,25 @@
 const menuBtn = document.getElementById("menu-btn");
 const navLinks = document.getElementById("nav-links");
-const menuBtnIcon = menuBtn.querySelector("i");
+let menuBtnIcon = null;
 
-menuBtn.addEventListener("click", (e) => {
-  navLinks.classList.toggle("open");
+if (menuBtn) {
+  menuBtnIcon = menuBtn.querySelector("i");
 
-  const isOpen = navLinks.classList.contains("open");
-  menuBtnIcon.setAttribute("class", isOpen ? "ri-close-line" : "ri-menu-line");
-});
+  menuBtn.addEventListener("click", (e) => {
+    if (!navLinks) return;
+    navLinks.classList.toggle("open");
 
-navLinks.addEventListener("click", (e) => {
-  navLinks.classList.remove("open");
-  menuBtnIcon.setAttribute("class", "ri-menu-line");
-});
+    const isOpen = navLinks.classList.contains("open");
+    if (menuBtnIcon) menuBtnIcon.setAttribute("class", isOpen ? "ri-close-line" : "ri-menu-line");
+  });
+
+  if (navLinks) {
+    navLinks.addEventListener("click", (e) => {
+      navLinks.classList.remove("open");
+      if (menuBtnIcon) menuBtnIcon.setAttribute("class", "ri-menu-line");
+    });
+  }
+}
 
 const scrollRevealOption = {
   distance: "50px",
@@ -21,19 +28,21 @@ const scrollRevealOption = {
 };
 
 // header container
-ScrollReveal().reveal(".header__container .section__subheader", {
-  ...scrollRevealOption,
-});
+if (typeof ScrollReveal === 'function') {
+  ScrollReveal().reveal(".header__container .section__subheader", {
+    ...scrollRevealOption,
+  });
 
-ScrollReveal().reveal(".header__container h1", {
-  ...scrollRevealOption,
-  delay: 500,
-});
+  ScrollReveal().reveal(".header__container h1", {
+    ...scrollRevealOption,
+    delay: 500,
+  });
 
-ScrollReveal().reveal(".header__container .btn", {
-  ...scrollRevealOption,
-  delay: 1000,
-});
+  ScrollReveal().reveal(".header__container .btn", {
+    ...scrollRevealOption,
+    delay: 1000,
+  });
+}
 
 // room container
 ScrollReveal().reveal(".room__card", {
@@ -107,13 +116,17 @@ function openRoomModal(roomType) {
   const amenitiesList = document.getElementById("modal-amenities");
   amenitiesList.innerHTML = data.amenities.map(amenity => `<li>${amenity}</li>`).join("");
   
-  roomModal.classList.add("active");
-  document.body.style.overflow = "hidden";
+  if (roomModal) {
+    roomModal.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
 }
 
 function closeRoomModal() {
-  roomModal.classList.remove("active");
-  document.body.style.overflow = "auto";
+  if (roomModal) {
+    roomModal.classList.remove("active");
+    document.body.style.overflow = "auto";
+  }
 }
 
 function changeImage(src) {
@@ -126,20 +139,22 @@ function changeImage(src) {
   });
 }
 
-viewDetailsButtons.forEach((btn, idx) => {
+if (viewDetailsButtons && viewDetailsButtons.length) {
+  viewDetailsButtons.forEach((btn, idx) => {
   const roomTypes = ["standard", "deluxe", "family"];
   btn.addEventListener("click", (e) => {
     e.preventDefault();
     openRoomModal(roomTypes[idx]);
   });
-});
+  });
+}
 
-roomModalClose.addEventListener("click", closeRoomModal);
-
-roomModalBack.addEventListener("click", closeRoomModal);
-
-roomModal.addEventListener("click", (e) => {
-  if (e.target === roomModal) {
-    closeRoomModal();
-  }
-});
+if (roomModalClose) roomModalClose.addEventListener("click", closeRoomModal);
+if (roomModalBack) roomModalBack.addEventListener("click", closeRoomModal);
+if (roomModal) {
+  roomModal.addEventListener("click", (e) => {
+    if (e.target === roomModal) {
+      closeRoomModal();
+    }
+  });
+}

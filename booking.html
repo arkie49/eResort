@@ -100,6 +100,27 @@
             <button class="btn" type="submit" id="booking-submit-btn">Complete Booking</button>
           </form>
         </div>
+          <!-- Booking Review Modal -->
+          <div id="booking-review-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:50; align-items:center; justify-content:center;">
+            <div style="background:#fff; max-width:520px; width:95%; margin:auto; border-radius:8px; padding:1.25rem;">
+              <h3 style="margin-top:0;">Review Your Booking</h3>
+              <div style="margin-bottom:0.5rem; color:#333;">
+                <p><strong>Name:</strong> <span id="reviewGuestName">-</span></p>
+                <p><strong>Email:</strong> <span id="reviewEmail">-</span></p>
+                <p><strong>Phone:</strong> <span id="reviewPhone">-</span></p>
+                <p><strong>Room:</strong> <span id="reviewRoomType">-</span></p>
+                <p><strong>Check-in:</strong> <span id="reviewCheckIn">-</span></p>
+                <p><strong>Check-out:</strong> <span id="reviewCheckOut">-</span></p>
+                <p><strong>Nights:</strong> <span id="reviewNights">-</span></p>
+                <p><strong>Price / night:</strong> <span id="reviewPricePerNight">-</span></p>
+                <p><strong>Total Price:</strong> <span id="reviewTotalPrice">-</span></p>
+              </div>
+              <div style="display:flex; gap:0.5rem; justify-content:flex-end; margin-top:1rem;">
+                <button class="btn btn__secondary" id="booking-edit-btn">Edit</button>
+                <button class="btn" id="booking-confirm-btn">Confirm & Submit</button>
+              </div>
+            </div>
+          </div>
       </div>
     </section>
 

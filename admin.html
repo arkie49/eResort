@@ -8,29 +8,14 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" rel="stylesheet" />
 </head>
 <body class="admin-page">
-  <div class="admin-login-overlay" id="adminLoginOverlay">
-    <div class="admin-login-box">
-      <h2>Admin Login</h2>
-      <div class="admin-login-error" id="adminLoginError"></div>
-      <div class="admin-login-field">
-        <label for="adminUsername">Username</label>
-        <input type="text" id="adminUsername" autocomplete="off" />
-      </div>
-      <div class="admin-login-field">
-        <label for="adminPassword">Password</label>
-        <input type="password" id="adminPassword" />
-      </div>
-      <div class="admin-login-actions">
-        <button class="btn" id="adminLoginSubmit">Login</button>
-        <button class="btn btn__secondary" id="adminLoginCancel">Cancel</button>
-      </div>
-    </div>
-  </div>
 
   <main class="admin__container">
     <!-- Dashboard Header -->
     <section class="admin__header">
       <h1>Bookings Management</h1>
+      <button class="btn btn__secondary" id="logoutBtn">
+        <i class="ri-logout-box-line"></i> Logout
+      </button>
     </section>
 
     <!-- Filters and Search -->

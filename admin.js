@@ -1,5 +1,20 @@
 // Admin Dashboard Functionality
 
+// Check authentication on page load
+function checkAdminAuth() {
+  if (localStorage.getItem("adminAuth") !== "true") {
+    window.location.href = "login.html";
+    return false;
+  }
+  return true;
+}
+
+// Logout function
+function logoutAdmin() {
+  localStorage.removeItem("adminAuth");
+  window.location.href = "login.html";
+}
+
 // Sample booking data used as fallback when Firestore isn't configured
 const SAMPLE_BOOKINGS = [
   { id: "BK001", guestName: "Juan Dela Cruz", email: "juan@email.com", phone: "09123456789", roomType: "deluxe", checkIn: "2024-03-10", checkOut: "2024-03-12", guests: 2, totalPrice: "P1,398", status: "confirmed", requests: "Late check-in requested." },
@@ -49,6 +64,7 @@ const saveChanges = document.getElementById("saveChanges");
 const deleteBooking = document.getElementById("deleteBooking");
 const exportBookings = document.getElementById("exportBookings");
 const confirmBookingEmailBtn = document.getElementById("confirmBookingEmail");
+const logoutBtn = document.getElementById("logoutBtn");
 
 // Current booking being edited
 let currentBooking = null;
@@ -77,6 +93,9 @@ function setupEventListeners() {
   exportBookings.addEventListener("click", exportBookingsData);
   if (confirmBookingEmailBtn) {
     confirmBookingEmailBtn.addEventListener("click", confirmBookingAndEmail);
+  }
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", logoutAdmin);
   }
 }
 
@@ -368,53 +387,8 @@ function calculateNights(checkIn, checkOut) {
   return nights > 0 ? nights : 0;
 }
 
-function handleAdminLogin() {
-  const overlay = document.getElementById("adminLoginOverlay");
-  const usernameInput = document.getElementById("adminUsername");
-  const passwordInput = document.getElementById("adminPassword");
-  const errorBox = document.getElementById("adminLoginError");
-  const submitBtn = document.getElementById("adminLoginSubmit");
-  const cancelBtn = document.getElementById("adminLoginCancel");
-
-  if (!overlay || !usernameInput || !passwordInput || !submitBtn || !cancelBtn) {
+document.addEventListener("DOMContentLoaded", function() {
+  if (checkAdminAuth()) {
     initAdmin();
-    return;
   }
-
-  const stored = localStorage.getItem("adminAuth");
-  if (stored === "true") {
-    overlay.style.display = "none";
-    initAdmin();
-    return;
-  }
-
-  const login = () => {
-    const username = usernameInput.value.trim();
-    const password = passwordInput.value.trim();
-
-    if (username === "admin" && password === "admin123") {
-      localStorage.setItem("adminAuth", "true");
-      overlay.style.display = "none";
-      initAdmin();
-    } else {
-      if (errorBox) {
-        errorBox.textContent = "Invalid username or password.";
-      }
-    }
-  };
-
-  submitBtn.addEventListener("click", login);
-
-  passwordInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      login();
-    }
-  });
-
-  cancelBtn.addEventListener("click", () => {
-    window.location.href = "index.html";
-  });
-}
-
-document.addEventListener("DOMContentLoaded", handleAdminLogin);
+});
