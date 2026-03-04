@@ -1,17 +1,3 @@
-// Firebase initialization (compat version)
-// Replace the config below with your Firebase project's config values
-
-/* Example config (replace with your values):
-const firebaseConfig = {
-  apiKey: "API_KEY",
-  authDomain: "PROJECT_ID.firebaseapp.com",
-  projectId: "PROJECT_ID",
-  storageBucket: "PROJECT_ID.appspot.com",
-  messagingSenderId: "SENDER_ID",
-  appId: "APP_ID"
-};
-*/
-
 const firebaseConfig = {
   apiKey: "AIzaSyBlCSR4v8ENLdUCbVaroN9cQy3kDueG_u8",
   authDomain: "eresort-7500a.firebaseapp.com",

@@ -58,8 +58,8 @@
             <h3>P499<span>/night</span></h3>
           </div>
           <div class="room__card__footer">
-            <button class="btn btn-view-details">View Details</button>
-            <a href="booking.html"><button class="btn">Book Now</button></a>
+            <button class="btn btn-view-details" id="view-details-standard" data-action="view-details" data-room="standard">View Details</button>
+            <a href="booking.html"><button class="btn" id="book-standard-btn" data-action="book-now" data-room="standard">Book Now</button></a>
           </div>
         </div>
         <div class="room__card room__card__large" data-room="deluxe">
@@ -72,8 +72,8 @@
             <h3>P699<span>/night</span></h3>
           </div>
           <div class="room__card__footer">
-            <button class="btn btn-view-details">View Details</button>
-            <a href="booking.html"><button class="btn">Book Now</button></a>
+            <button class="btn btn-view-details" id="view-details-deluxe" data-action="view-details" data-room="deluxe">View Details</button>
+            <a href="booking.html"><button class="btn" id="book-deluxe-btn" data-action="book-now" data-room="deluxe">Book Now</button></a>
           </div>
         </div>
         <div class="room__card room__card__large" data-room="family">
@@ -86,8 +86,8 @@
             <h3>P799-P999<span>/night</span></h3>
           </div>
           <div class="room__card__footer">
-            <button class="btn btn-view-details">View Details</button>
-            <a href="booking.html"><button class="btn">Book Now</button></a>
+            <button class="btn btn-view-details" id="view-details-family" data-action="view-details" data-room="family">View Details</button>
+            <a href="booking.html"><button class="btn" id="book-family-btn" data-action="book-now" data-room="family">Book Now</button></a>
           </div>
         </div>
       </div>
@@ -216,8 +216,8 @@
             Choose your perfect room and experience luxury like never before. Our booking is simple, secure, and instant.
           </p>
           <div class="cta__buttons">
-            <a href="booking.html"><button class="btn">Book a Room</button></a>
-            <a href="about.html"><button class="btn btn__secondary">Learn More</button></a>
+            <a href="booking.html"><button class="btn" id="room-book-btn" data-action="book-now">Book a Room</button></a>
+            <a href="about.html"><button class="btn btn__secondary" id="room-learn-more-btn" data-action="learn-more">Learn More</button></a>
           </div>
         </div>
       </div>
@@ -250,7 +250,7 @@
               <ul id="modal-amenities"></ul>
             </div>
             
-            <a href="booking.html"><button class="btn btn-large">Book This Room</button></a>
+            <a href="booking.html"><button class="btn btn-large" id="book-this-room-btn" data-action="book-now">Book This Room</button></a>
           </div>
         </div>
       </div>

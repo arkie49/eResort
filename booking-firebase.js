@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     }
 
-    // handle confirm -> submit to Firebase
+    //firebase submission
     if (confirmBtn) {
       confirmBtn.onclick = async (ev) => {
         ev.preventDefault();

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+  <title>Room Availability - eResort</title>
+  <style>
+    .availability__container {
+      min-height: 100vh;
+      background: var(--light);
+      padding: 40px 20px;
+    }
+
+    .availability__header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .availability__header h1 {
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      font-size: 2.5rem;
+    }
+
+    .availability__header p {
+      color: var(--text-light);
+      font-size: 1.1rem;
+    }
+
+    .availability__controls {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .month__selector {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: var(--white);
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .month__selector button {
+      background: var(--secondary-color);
+      color: var(--white);
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .month__selector button:hover {
+      background: #f59a0f;
+      transform: translateY(-2px);
+    }
+
+    .month__selector button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .current__month {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      min-width: 200px;
+      text-align: center;
+    }
+
+    .room__filter {
+      background: var(--white);
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .room__filter select {
+      padding: 8px 12px;
+      border: 2px solid #e1e8ed;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .room__filter select:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 3px rgba(246, 172, 15, 0.1);
+    }
+
+    .calendar__wrapper {
+      background: var(--white);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      overflow-x: auto;
+    }
+
+    .room__section {
+      margin-bottom: 40px;
+    }
+
+    .room__title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 3px solid var(--secondary-color);
+    }
+
+    .room__price {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      margin-left: 10px;
+    }
+
+    .calendar__table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+
+    .calendar__table th {
+      background: #f8f9fa;
+      padding: 12px;
+      text-align: center;
+      font-weight: 600;
+      color: var(--text-dark);
+      border: 1px solid #e1e8ed;
+      font-size: 0.85rem;
+    }
+
+    .calendar__table td {
+      padding: 12px;
+      text-align: center;
+      border: 1px solid #e1e8ed;
+      height: 60px;
+      vertical-align: middle;
+      font-size: 0.85rem;
+    }
+
+    .date__cell {
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .date__cell:hover {
+      background: #f5f5f5;
+    }
+
+    .date__number {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .date__cell.available {
+      background: #e8f5e9;
+      border-color: #4caf50;
+    }
+
+    .date__cell.available .availability__badge {
+      background: #4caf50;
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    .date__cell.booked {
+      background: #ffebee;
+      border-color: #f44336;
+    }
+
+    .date__cell.booked .availability__badge {
+      background: #f44336;
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    .date__cell.partial {
+      background: #fff3e0;
+      border-color: #ff9800;
+    }
+
+    .date__cell.partial .availability__badge {
+      background: #ff9800;
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+
+    .date__cell.other-month {
+      background: #f5f5f5;
+      color: #ccc;
+      cursor: default;
+    }
+
+    .date__cell.other-month .date__number {
+      color: #ccc;
+    }
+
+    .legend {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+      padding-top: 30px;
+      border-top: 2px solid #e1e8ed;
+      justify-content: center;
+    }
+
+    .legend__item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .legend__color {
+      width: 30px;
+      height: 30px;
+      border-radius: 4px;
+      border: 2px solid #999;
+    }
+
+    .legend__color.available {
+      background: #e8f5e9;
+      border-color: #4caf50;
+    }
+
+    .legend__color.booked {
+      background: #ffebee;
+      border-color: #f44336;
+    }
+
+    .legend__color.partial {
+      background: #fff3e0;
+      border-color: #ff9800;
+    }
+
+    .legend__label {
+      font-size: 0.95rem;
+      color: var(--text-dark);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-light);
+    }
+
+    .loading__spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--secondary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .error__message {
+      background: #ffebee;
+      color: #c0392b;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border-left: 4px solid #e74c3c;
+    }
+
+    .back__button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 30px;
+      background: var(--white);
+      padding: 12px 20px;
+      border-radius: 6px;
+      border: 2px solid #e1e8ed;
+      cursor: pointer;
+      color: var(--text-dark);
+      font-weight: 500;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .back__button:hover {
+      background: var(--secondary-color);
+      color: var(--white);
+      border-color: var(--secondary-color);
+    }
+
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      cursor: help;
+    }
+
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 200px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 8px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      margin-left: -100px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 0.85rem;
+    }
+
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .availability__header h1 {
+        font-size: 1.8rem;
+      }
+
+      .availability__controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .month__selector {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .room__filter {
+        width: 100%;
+      }
+
+      .calendar__table {
+        font-size: 0.75rem;
+      }
+
+      .calendar__table td {
+        padding: 8px;
+        height: 50px;
+      }
+
+      .legend {
+        flex-direction: column;
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav__bar">
+      <div class="nav__header">
+        <div class="logo nav__logo">
+          <div>KBR</div>
+          <span>eResort<br />KAMAYAN BEACH RESORT</span>
+        </div>
+        <div class="nav__menu__btn" id="menu-btn">
+          <i class="ri-menu-line"></i>
+        </div>
+      </div>
+      <ul class="nav__links" id="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="room.html">Rooms</a></li>
+        <li><a href="booking.html">Booking</a></li>
+        <li><a href="index.html#feature">Features</a></li>
+        <li><a href="index.html#news">News</a></li>
+        <li><a href="admin.html">Admin</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="availability__container">
+    <a href="index.html" class="back__button">
+      <i class="ri-arrow-left-line"></i>
+      Back to Home
+    </a>
+
+    <div class="availability__header">
+      <h1>Room Availability Calendar</h1>
+      <p>Check real-time availability for our rooms</p>
+    </div>
+
+    <div class="availability__controls">
+      <div class="month__selector">
+        <button id="prevMonthBtn" title="Previous month">
+          <i class="ri-arrow-left-s-line"></i>
+        </button>
+        <div class="current__month" id="currentMonth">Loading...</div>
+        <button id="nextMonthBtn" title="Next month">
+          <i class="ri-arrow-right-s-line"></i>
+        </button>
+      </div>
+
+      <div class="room__filter">
+        <select id="roomFilter">
+          <option value="">All Rooms</option>
+          <option value="standard">Standard Room</option>
+          <option value="deluxe">Deluxe Room</option>
+          <option value="family">Family Room / Barkada Suite</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="errorContainer"></div>
+
+    <div class="calendar__wrapper">
+      <div id="calendarContent">
+        <div class="loading">
+          <div class="loading__spinner"></div>
+          <p>Loading availability data...</p>
+        </div>
+      </div>
+
+      <div class="legend">
+        <div class="legend__item">
+          <div class="legend__color available"></div>
+          <span class="legend__label">Available</span>
+        </div>
+        <div class="legend__item">
+          <div class="legend__color partial"></div>
+          <span class="legend__label">Partially Available</span>
+        </div>
+        <div class="legend__item">
+          <div class="legend__color booked"></div>
+          <span class="legend__label">Fully Booked</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="section__container footer__container">
+      <div class="footer__col">
+        <div class="logo footer__logo">
+          <div>KBR</div>
+          <span>eResort<br />KAMAYAN BEACH RESORT</span>
+        </div>
+        <p class="section__description">
+          "At Kamayan, we don't just offer a room; we offer a seat at the table of the elements. Come as a guest, leave as part of the tides."
+        </p>
+        <ul class="footer__socials">
+          <li><a href="#"><i class="ri-youtube-fill"></i></a></li>
+          <li><a href="#"><i class="ri-instagram-line"></i></a></li>
+          <li>
+            <a href="https://www.facebook.com/KamayanPenthouseBeachResort"><i class="ri-facebook-fill"></i></a>
+          </li>
+          <li><a href="#"><i class="ri-linkedin-fill"></i></a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Services</h4>
+        <div class="footer__links">
+          <li><a href="#">Online Booking</a></li>
+          <li><a href="#">Special Offers</a></li>
+          <li><a href="#">Customer Support</a></li>
+        </div>
+      </div>
+      <div class="footer__col">
+        <h4>Contact Us</h4>
+        <div class="footer__links">
+          <li>
+            <span><i class="ri-phone-fill"></i></span>
+            <div>
+              <h5>Phone Number</h5>
+              <p>09088124538 / 09171692377</p>
+            </div>
+          </li>
+          <li>
+            <span><i class="ri-record-mail-line"></i></span>
+            <div>
+              <h5>Email</h5>
+              <p>info@kamayanBR.com</p>
+            </div>
+          </li>
+          <li>
+            <span><i class="ri-map-pin-2-fill"></i></span>
+            <div>
+              <h5>Location</h5>
+              <p>HGXP+JQR kamayan beach resort, Roxas, Oriental Mindoro</p>
+            </div>
+          </li>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bar">
+      Copyright © 2026 eResort. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script src="firebase.js"></script>
+  <script src="availability.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

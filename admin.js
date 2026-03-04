@@ -1,6 +1,3 @@
-// Admin Dashboard Functionality
-
-// Check authentication on page load
 function checkAdminAuth() {
   if (localStorage.getItem("adminAuth") !== "true") {
     window.location.href = "login.html";
@@ -9,15 +6,13 @@ function checkAdminAuth() {
   return true;
 }
 
-// Logout function
 function logoutAdmin() {
   localStorage.removeItem("adminAuth");
   window.location.href = "login.html";
 }
 
-// Sample booking data used as fallback when Firestore isn't configured
 const SAMPLE_BOOKINGS = [
-  { id: "BK001", guestName: "Juan Dela Cruz", email: "juan@email.com", phone: "09123456789", roomType: "deluxe", checkIn: "2024-03-10", checkOut: "2024-03-12", guests: 2, totalPrice: "P1,398", status: "confirmed", requests: "Late check-in requested." },
+  { id: "BK001", guestName: "Juan ", email: "juan@email.com", phone: "09123456789", roomType: "deluxe", checkIn: "2024-03-10", checkOut: "2024-03-12", guests: 2, totalPrice: "P1,398", status: "confirmed", requests: "Late check-in requested." },
   { id: "BK002", guestName: "Maria Santos", email: "maria@email.com", phone: "09234567890", roomType: "standard", checkIn: "2024-03-15", checkOut: "2024-03-17", guests: 1, totalPrice: "P998", status: "pending", requests: "None" }
 ];
 
@@ -52,7 +47,6 @@ function subscribeToFirestoreBookings() {
   unsubscribeBookings = () => ref.off('value', listener);
 }
 
-// DOM Elements
 const bookingsTableBody = document.getElementById("bookingsTableBody");
 const searchInput = document.getElementById("searchBooking");
 const filterStatus = document.getElementById("filterStatus");
@@ -66,17 +60,14 @@ const exportBookings = document.getElementById("exportBookings");
 const confirmBookingEmailBtn = document.getElementById("confirmBookingEmail");
 const logoutBtn = document.getElementById("logoutBtn");
 
-// Current booking being edited
 let currentBooking = null;
 
-// Initialize the admin dashboard
 function initAdmin() {
-  // If Firestore is available, subscribe to live bookings; otherwise render fallback
+  
   subscribeToFirestoreBookings();
   setupEventListeners();
 }
 
-// Setup event listeners
 function setupEventListeners() {
   searchInput.addEventListener("input", filterBookings);
   filterStatus.addEventListener("change", filterBookings);
@@ -99,7 +90,7 @@ function setupEventListeners() {
   }
 }
 
-// Render bookings table
+
 function renderBookingsTable(bookings) {
   if (bookings.length === 0) {
     bookingsTableBody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 2rem; color: var(--text-light);">No bookings found</td></tr>';
@@ -134,7 +125,6 @@ function renderBookingsTable(bookings) {
   `).join("");
 }
 
-// Filter bookings based on search and filters
 function filterBookings() {
   const searchTerm = searchInput.value.toLowerCase();
   const statusFilter = filterStatus.value;
@@ -155,14 +145,12 @@ function filterBookings() {
   renderBookingsTable(filtered);
 }
 
-// Open booking details modal
 function openBookingModal(bookingId) {
   const booking = bookingsData.find(b => b.id === bookingId);
   if (!booking) return;
 
   currentBooking = booking;
 
-  // Populate modal with booking data
   document.getElementById("modalGuestName").textContent = booking.guestName;
   document.getElementById("modalGuestEmail").textContent = booking.email;
   document.getElementById("modalGuestPhone").textContent = booking.phone;
@@ -177,13 +165,11 @@ function openBookingModal(bookingId) {
   bookingModal.classList.add("active");
 }
 
-// Close booking modal
 function closeModal() {
   bookingModal.classList.remove("active");
   currentBooking = null;
 }
 
-// Update booking status
 function updateBooking() {
   if (!currentBooking) return;
 
@@ -201,7 +187,6 @@ function updateBooking() {
     return;
   }
 
-  // Fallback: update local array
   const bookingIndex = bookingsData.findIndex(b => b.id === currentBooking.id);
   if (bookingIndex !== -1) {
     bookingsData[bookingIndex].status = newStatus;
@@ -272,7 +257,6 @@ function sendBookingEmail(booking) {
   window.location.href = `mailto:${booking.email}?subject=${subject}&body=${body}`;
 }
 
-// Delete booking
 function removeBooking() {
   if (!currentBooking) return;
 
@@ -300,7 +284,6 @@ function removeBooking() {
   }
 }
 
-// Delete booking directly from table
 function deleteBookingDirect(bookingId) {
   if (!confirm(`Are you sure you want to delete booking ${bookingId}?`)) return;
 
@@ -324,7 +307,6 @@ function deleteBookingDirect(bookingId) {
   }
 }
 
-// Export bookings to CSV
 function exportBookingsData() {
   const buildAndDownload = (rows) => {
     let csvContent = "Booking ID,Guest Name,Email,Phone,Room Type,Check-in,Check-out,Guests,Status,Special Requests\n";
@@ -365,7 +347,6 @@ function exportBookingsData() {
   buildAndDownload(bookingsData);
 }
 
-// Helper functions
 function formatDate(dateString) {
   const date = new Date(dateString);
   return date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
