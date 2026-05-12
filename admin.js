@@ -1,3 +1,50 @@
+import { database } from './firebase.js';
+import { ref, query, orderByChild, onValue, get, update, remove } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js';
+
+// EmailJS configuration
+const EMAILJS_SERVICE_ID = 'service_8lc2f7c';
+const EMAILJS_TEMPLATE_ID = 'template_oeiohhi';
+const EMAILJS_PUBLIC_KEY = 'bLNJcScAyYYtd_kGu';
+
+// Send email using EmailJS API directly (without library)
+async function sendEmailViaEmailJS(templateParams) {
+  try {
+    const requestBody = {
+      service_id: EMAILJS_SERVICE_ID,
+      template_id: EMAILJS_TEMPLATE_ID,
+      user_id: EMAILJS_PUBLIC_KEY,
+      template_params: templateParams
+    };
+    
+    console.log('📧 EmailJS Request:', JSON.stringify(requestBody, null, 2));
+    
+    const response = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    console.log('📧 EmailJS Response Status:', response.status, response.statusText);
+
+    if (!response.ok) {
+      const text = await response.text();
+      console.error('EmailJS API error details:', text);
+      throw new Error(`EmailJS API error: ${response.status} - ${text}`);
+    }
+
+    // EmailJS returns "OK" as plain text on success, not JSON
+    const responseText = await response.text();
+    console.log('📧 EmailJS Response Body:', responseText);
+    
+    return { status: 'success', response: responseText };
+  } catch (error) {
+    console.error('EmailJS send failed:', error);
+    throw error;
+  }
+}
+
 function checkAdminAuth() {
   if (localStorage.getItem("adminAuth") !== "true") {
     window.location.href = "login.html";
@@ -20,31 +67,38 @@ let bookingsData = SAMPLE_BOOKINGS.slice();
 
 let unsubscribeBookings = null;
 
-function subscribeToFirestoreBookings() {
-  if (!window.firebaseDb) {
-    console.log('Firestore not available; using sample bookings');
+function subscribeToRealtimeBookings() {
+  if (!database) {
+    console.log('Realtime Database not available; using local and sample bookings');
+    const localBookings = JSON.parse(localStorage.getItem('eresort_bookings') || '[]');
+    bookingsData = [...SAMPLE_BOOKINGS, ...localBookings];
     renderBookingsTable(bookingsData);
     return;
   }
 
   if (typeof unsubscribeBookings === 'function') unsubscribeBookings();
 
-  const ref = window.firebaseDb.ref('bookings');
+  const bookingsRef = ref(database, 'bookings');
+  const bookingsQuery = query(bookingsRef, orderByChild('createdAt'));
 
-  const listener = ref.on('value', snapshot => {
+  const unsubscribe = onValue(bookingsQuery, (snapshot) => {
     const rows = [];
-    snapshot.forEach(childSnapshot => {
-      rows.push({ id: childSnapshot.key, ...childSnapshot.val() });
+    snapshot.forEach((childSnapshot) => {
+      const item = childSnapshot.val();
+      rows.push({ id: childSnapshot.key, ...item });
     });
-    rows.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-    bookingsData = rows;
+
+    const localBookings = JSON.parse(localStorage.getItem('eresort_bookings') || '[]');
+    bookingsData = [...rows.reverse(), ...localBookings];
     renderBookingsTable(bookingsData);
-  }, err => {
+  }, (err) => {
     console.error('Error fetching bookings:', err);
+    const localBookings = JSON.parse(localStorage.getItem('eresort_bookings') || '[]');
+    bookingsData = [...SAMPLE_BOOKINGS, ...localBookings];
     renderBookingsTable(bookingsData);
   });
 
-  unsubscribeBookings = () => ref.off('value', listener);
+  unsubscribeBookings = unsubscribe;
 }
 
 const bookingsTableBody = document.getElementById("bookingsTableBody");
@@ -64,7 +118,7 @@ let currentBooking = null;
 
 function initAdmin() {
   
-  subscribeToFirestoreBookings();
+  subscribeToRealtimeBookings();
   setupEventListeners();
 }
 
@@ -174,8 +228,8 @@ function updateBooking() {
   if (!currentBooking) return;
 
   const newStatus = document.getElementById("modalStatus").value;
-  if (window.firebaseDb && currentBooking.id) {
-    window.firebaseDb.ref('bookings/' + currentBooking.id).update({ status: newStatus })
+  if (database && currentBooking.id) {
+    update(ref(database, `bookings/${currentBooking.id}`), { status: newStatus })
       .then(() => {
         alert(`Booking ${currentBooking.id} updated successfully!`);
         closeModal();
@@ -215,8 +269,8 @@ function confirmBookingAndEmail() {
     closeModal();
   };
 
-  if (window.firebaseDb && bookingId) {
-    window.firebaseDb.ref('bookings/' + bookingId).update({ status: newStatus })
+  if (database && bookingId) {
+    update(ref(database, `bookings/${bookingId}`), { status: newStatus })
       .then(() => {
         applyLocalUpdate();
         afterUpdate();
@@ -234,44 +288,48 @@ function confirmBookingAndEmail() {
 
 function sendBookingEmail(booking) {
   if (!booking || !booking.email) return;
-  const subject = encodeURIComponent("Booking Confirmation - Kamayan Beach Resort");
-  const lines = [
-    `Dear ${booking.guestName || "Guest"},`,
-    "",
-    "Your booking has been confirmed. Here are your reservation details:",
-    "",
-    `Booking ID: ${booking.id}`,
-    `Room: ${formatRoomType(booking.roomType)}`,
-    `Check-in: ${formatDate(booking.checkIn)}`,
-    `Check-out: ${formatDate(booking.checkOut)}`,
-    `Guests: ${booking.guests}`,
-    "",
-    "If you have any questions or need to make changes, please reply to this email.",
-    "",
-    "We look forward to welcoming you to Kamayan Beach Resort.",
-    "",
-    "Best regards,",
-    "Kamayan Beach Resort"
-  ];
-  const body = encodeURIComponent(lines.join("\n"));
-  window.location.href = `mailto:${booking.email}?subject=${subject}&body=${body}`;
+
+  const templateParams = {
+    to_email: booking.email,
+    reply_to: booking.email,
+    guest_name: booking.guestName || "Guest",
+    booking_id: booking.id,
+    room_type: formatRoomType(booking.roomType),
+    check_in: formatDate(booking.checkIn),
+    check_out: formatDate(booking.checkOut),
+    guests: booking.guests,
+    total_price: booking.totalPrice,
+    special_requests: booking.requests || "None"
+  };
+
+  console.log('📧 Template params being sent:', JSON.stringify(templateParams, null, 2));
+
+  sendEmailViaEmailJS(templateParams)
+    .then((response) => {
+      console.log('Email sent successfully!', response);
+      alert('✓ Confirmation email sent to customer.');
+    })
+    .catch((error) => {
+      console.error('Failed to send email:', error);
+      alert('Booking confirmed, but email delivery failed.\nPlease try again or contact customer manually.');
+    });
 }
 
 function removeBooking() {
   if (!currentBooking) return;
 
   if (confirm(`Are you sure you want to delete booking ${currentBooking.id}?`)) {
-    if (window.firebaseDb && currentBooking.id) {
-      window.firebaseDb.ref('bookings/' + currentBooking.id).remove()
-        .then(() => {
-          alert(`Booking ${currentBooking.id} has been deleted.`);
-          closeModal();
-        })
-        .catch(err => {
-          console.error(err);
-          alert('Failed to delete booking.');
-        });
-      return;
+if (database && currentBooking.id) {
+    remove(ref(database, `bookings/${currentBooking.id}`))
+      .then(() => {
+        alert(`Booking ${currentBooking.id} has been deleted.`);
+        closeModal();
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Failed to delete booking.');
+      });
+    return;
     }
 
     const bookingIndex = bookingsData.findIndex(b => b.id === currentBooking.id);
@@ -287,8 +345,8 @@ function removeBooking() {
 function deleteBookingDirect(bookingId) {
   if (!confirm(`Are you sure you want to delete booking ${bookingId}?`)) return;
 
-  if (window.firebaseDb) {
-    window.firebaseDb.ref('bookings/' + bookingId).remove()
+  if (database) {
+    remove(ref(database, `bookings/${bookingId}`))
       .then(() => {
         alert(`Booking ${bookingId} has been deleted.`);
       })
@@ -328,8 +386,8 @@ function exportBookingsData() {
     alert("Bookings exported successfully!");
   };
 
-  if (window.firebaseDb) {
-    window.firebaseDb.ref('bookings').once('value')
+  if (database) {
+    get(ref(database, 'bookings'))
       .then(snapshot => {
         const rows = [];
         snapshot.forEach(childSnapshot => {
@@ -346,6 +404,9 @@ function exportBookingsData() {
 
   buildAndDownload(bookingsData);
 }
+
+window.openBookingModal = openBookingModal;
+window.deleteBookingDirect = deleteBookingDirect;
 
 function formatDate(dateString) {
   const date = new Date(dateString);

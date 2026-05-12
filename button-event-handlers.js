@@ -73,7 +73,7 @@ const exploreRoomsBtn = document.getElementById('about-explore-rooms-btn');
 if (exploreRoomsBtn) {
   exploreRoomsBtn.addEventListener('click', function() {
     console.log('User clicked: Explore Our Rooms');
-    // window.location.href = 'room.html';
+    window.location.href = 'room.html';
   });
 }
 
@@ -82,7 +82,7 @@ const viewRoomsBtn = document.getElementById('about-view-rooms-btn');
 if (viewRoomsBtn) {
   viewRoomsBtn.addEventListener('click', function() {
     console.log('User clicked: View Rooms (About CTA)');
-    // window.location.href = 'room.html';
+    window.location.href = 'room.html';
   });
 }
 
@@ -324,14 +324,8 @@ function trackButtonClick(buttonId, action, data = {}) {
   
   console.log('[Analytics]', eventData);
   
-  // Send to your analytics service
-  // Example: Google Analytics, Mixpanel, etc.
-  // if (typeof gtag !== 'undefined') {
-  //   gtag('event', action, eventData);
-  // }
 }
 
-// Add to global click handler
 document.addEventListener('click', function(e) {
   if (e.target.id && (e.target.tagName === 'BUTTON' || e.target.closest('button'))) {
     const button = e.target.tagName === 'BUTTON' ? e.target : e.target.closest('button');

@@ -1,4 +1,43 @@
-// Booking form Firebase handler
+import { database, firebaseTimestamp } from './firebase.js';
+import { ref, push } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js';
+
+// Local fallback storage for offline/file:// mode
+function getLocalBookings() {
+  const stored = localStorage.getItem('eresort_bookings');
+  return stored ? JSON.parse(stored) : [];
+}
+
+function saveLocalBooking(bookingData) {
+  const bookings = getLocalBookings();
+  const id = 'LOCAL_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+  bookings.push({ id, ...bookingData, savedAt: new Date().toISOString() });
+  localStorage.setItem('eresort_bookings', JSON.stringify(bookings));
+  return id;
+}
+
+function createBookingData(guestName, email, phone, checkIn, checkOut, guests, roomType, requests, nights, pricePerNight, totalPrice) {
+  return {
+    guestName,
+    email,
+    phone,
+    checkIn,
+    checkOut,
+    guests,
+    roomType,
+    requests,
+    nights,
+    pricePerNight,
+    totalPrice,
+    status: 'pending',
+    createdAt: firebaseTimestamp ? firebaseTimestamp() : Date.now()
+  };
+}
+
+async function submitBookingToRealtime(data) {
+  const bookingsRef = ref(database, 'bookings');
+  return push(bookingsRef, data);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('.booking__form__wrapper form');
   const overlay = document.getElementById('booking-loading');
@@ -9,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const prices = {
       standard: 499,
       deluxe: 699,
-      family: 799 // use the displayed minimum price for family rooms (P799-P999)
+      family: 799
     };
     return prices[roomType] || 0;
   }
@@ -29,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // gather values
     const guestName = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
     const phone = document.getElementById('phone').value.trim();
@@ -43,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const pricePerNight = parsePriceForRoom(roomType);
     const totalPrice = nights * pricePerNight;
 
-    // populate review modal
     if (reviewModal) {
       document.getElementById('reviewGuestName').textContent = guestName || '-';
       document.getElementById('reviewEmail').textContent = email || '-';
@@ -54,11 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('reviewNights').textContent = nights || 0;
       document.getElementById('reviewPricePerNight').textContent = pricePerNight ? `P${pricePerNight}` : '-';
       document.getElementById('reviewTotalPrice').textContent = totalPrice ? `P${totalPrice}` : '-';
-
       reviewModal.style.display = 'flex';
     }
 
-    // handle edit (close modal)
     if (editBtn) {
       editBtn.onclick = (ev) => {
         ev.preventDefault();
@@ -66,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     }
 
-    //firebase submission
     if (confirmBtn) {
       confirmBtn.onclick = async (ev) => {
         ev.preventDefault();
@@ -76,41 +110,38 @@ document.addEventListener('DOMContentLoaded', () => {
           submitBtn.textContent = 'Submitting...';
         }
 
-        const data = {
-          guestName,
-          email,
-          phone,
-          checkIn,
-          checkOut,
-          guests,
-          roomType,
-          requests,
-          nights,
-          pricePerNight,
-          totalPrice,
-          status: 'pending',
-          createdAt: firebase.database.ServerValue.TIMESTAMP
-        };
+        const data = createBookingData(guestName, email, phone, checkIn, checkOut, guests, roomType, requests, nights, pricePerNight, totalPrice);
+        const isFileProtocol = window.location.protocol === 'file:';
 
-        if (!window.firebaseDb) {
-          alert('Database not configured. Please set up Firebase and refresh.');
+        const fallback = () => {
+          const localId = saveLocalBooking(data);
+          alert(`Booking saved locally (ID: ${localId}).\n\nNote: Run the app on a web server to sync with Firebase.\n\nTo test Firebase:\n1. Enable Realtime Database in your Firebase project\n2. Set Realtime Database rules to allow writes\n3. Run from a web server (not file://)`);
+          form.reset();
+          reviewModal.style.display = 'none';
           if (overlay) overlay.classList.remove('active');
           if (submitBtn) {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Complete Booking';
           }
-          reviewModal.style.display = 'none';
+        };
+
+        if (isFileProtocol || !database) {
+          fallback();
           return;
         }
 
         try {
-          const ref = await window.firebaseDb.ref('bookings').push(data);
-          alert('Booking submitted! Reference ID: ' + ref.key);
+          const submissionPromise = submitBookingToRealtime(data);
+          const timeoutPromise = new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Connection timeout - saving locally')), 5000)
+          );
+          const bookingRef = await Promise.race([submissionPromise, timeoutPromise]);
+          alert('Booking submitted to Firebase! Reference ID: ' + bookingRef.key);
           form.reset();
           reviewModal.style.display = 'none';
         } catch (err) {
-          console.error(err);
-          alert('Failed to submit booking. Check console for details.');
+          console.warn('Firebase submission failed:', err);
+          fallback();
         } finally {
           if (overlay) overlay.classList.remove('active');
           if (submitBtn) {

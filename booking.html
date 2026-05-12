@@ -46,7 +46,7 @@
 
     <section class="booking booking__page">
       <div class="section__container booking__container">
-        <div class="booking__form__wrapper">
+        <div class="booking__form__wrapper" id="booking-form">
           <h2>Complete Booking</h2>
           <div class="booking__form__overlay" id="booking-loading">
             <div class="booking__spinner"></div>
@@ -230,7 +230,7 @@
           <p class="section__description">
             Save up to 20% on your stay when you book 30 days in advance. Use code: EARLY20 at checkout.
           </p>
-          <button class="btn" id="cta-book-btn" data-action="book-now">Book Now</button>
+          <a class="btn" href="#booking-form" id="cta-book-btn" data-action="book-now">Book Now</a>
         </div>
       </div>
     </section>
@@ -304,9 +304,7 @@
 
     <script src="https://unpkg.com/scrollreveal"></script>
     <script src="main.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-    <script src="firebase.js"></script>
-    <script src="booking-firebase.js"></script>
+    <script type="module" src="firebase.js"></script>
+    <script type="module" src="booking-firebase.js"></script>
   </body>
 </html>

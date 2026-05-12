@@ -1,3 +1,6 @@
+import { database } from './firebase.js';
+import { ref, query, orderByChild, onValue } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js';
+
 class AvailabilityCalendar {
   constructor() {
     this.currentDate = new Date();
@@ -27,10 +30,8 @@ class AvailabilityCalendar {
     console.log('AvailabilityCalendar: Setting up...');
     try {
       this.attachEventListeners();
-      // First render with empty bookings
       console.log('Rendering with 0 bookings initially');
       this.renderCalendar();
-      // Then load bookings from Firebase
       console.log('Loading bookings from Firebase...');
       this.loadBookings();
     } catch (error) {
@@ -55,31 +56,31 @@ class AvailabilityCalendar {
   async loadBookings() {
     try {
       console.log('AvailabilityCalendar: Loading bookings...');
-      
-      let attempts = 0;
-      while (!window.firebaseDb && attempts < 20) {
-        await new Promise(resolve => setTimeout(resolve, 100));
-        attempts++;
-      }
 
-      if (!window.firebaseDb) {
-        console.warn('AvailabilityCalendar: Firebase not initialized yet, retrying...');
-        setTimeout(() => this.loadBookings(), 1000);
+      if (!database) {
+        console.warn('AvailabilityCalendar: Realtime Database not initialized.');
+        this.showError('Unable to load live booking data.');
         return;
       }
 
-      const ref = window.firebaseDb.ref('bookings');
-      
-      ref.on('value', (snapshot) => {
-        if (snapshot.exists()) {
-          const data = snapshot.val();
-          this.bookings = Object.keys(data)
-            .map(key => ({
-              id: key,
-              ...data[key]
-            }))
-            .filter(booking => booking && booking.checkIn && booking.checkOut);
-          
+      const bookingsRef = ref(database, 'bookings');
+      const bookingsQuery = query(bookingsRef, orderByChild('createdAt'));
+
+      onValue(bookingsQuery, (snapshot) => {
+        const rows = [];
+        snapshot.forEach((childSnapshot) => {
+          const item = childSnapshot.val();
+          rows.push({ id: childSnapshot.key, ...item });
+        });
+
+        if (rows.length > 0) {
+          this.bookings = rows
+            .filter(booking => booking && booking.checkIn && booking.checkOut)
+            .sort((a, b) => {
+              const aTime = typeof a.createdAt === 'number' ? a.createdAt : new Date(a.createdAt).getTime();
+              const bTime = typeof b.createdAt === 'number' ? b.createdAt : new Date(b.createdAt).getTime();
+              return bTime - aTime;
+            });
           console.log('AvailabilityCalendar: Loaded', this.bookings.length, 'bookings');
           this.bookings.forEach(b => {
             console.log(`  - ${b.guestName} (${b.roomType}): ${b.checkIn} to ${b.checkOut} [${b.status}]`);
@@ -90,7 +91,7 @@ class AvailabilityCalendar {
         }
         this.renderCalendar();
       }, (error) => {
-        console.error('AvailabilityCalendar: Firebase error:', error);
+        console.error('AvailabilityCalendar: Realtime Database error:', error);
         this.showError('Note: Using cached data. Real-time updates unavailable.');
       });
     } catch (error) {
