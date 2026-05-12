@@ -59,8 +59,8 @@ function logoutAdmin() {
 }
 
 const SAMPLE_BOOKINGS = [
-  { id: "BK001", guestName: "Juan ", email: "juan@email.com", phone: "09123456789", roomType: "deluxe", checkIn: "2024-03-10", checkOut: "2024-03-12", guests: 2, totalPrice: "P1,398", status: "confirmed", requests: "Late check-in requested." },
-  { id: "BK002", guestName: "Maria Santos", email: "maria@email.com", phone: "09234567890", roomType: "standard", checkIn: "2024-03-15", checkOut: "2024-03-17", guests: 1, totalPrice: "P998", status: "pending", requests: "None" }
+  { id: "BK001", guestName: "Juan ", email: "juan@email.com", phone: "09123456789", roomType: "deluxe", checkIn: "2024-03-10", checkOut: "2024-03-12", guests: 2, totalPrice: "P1,398", status: "confirmed", requests: "Late check-in requested.", gcashNumber: "0917-123-4567", gcashRef: "REF123456" },
+  { id: "BK002", guestName: "Maria Santos", email: "maria@email.com", phone: "09234567890", roomType: "standard", checkIn: "2024-03-15", checkOut: "2024-03-17", guests: 1, totalPrice: "P998", status: "pending", requests: "None", gcashNumber: "0917-987-6543", gcashRef: "REF789012" }
 ];
 
 let bookingsData = SAMPLE_BOOKINGS.slice();
@@ -147,7 +147,7 @@ function setupEventListeners() {
 
 function renderBookingsTable(bookings) {
   if (bookings.length === 0) {
-    bookingsTableBody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 2rem; color: var(--text-light);">No bookings found</td></tr>';
+    bookingsTableBody.innerHTML = '<tr><td colspan="11" style="text-align: center; padding: 2rem; color: var(--text-light);">No bookings found</td></tr>';
     return;
   }
 
@@ -160,6 +160,8 @@ function renderBookingsTable(bookings) {
       <td>${formatRoomType(booking.roomType)}</td>
       <td>${formatDate(booking.checkIn)}</td>
       <td>${formatDate(booking.checkOut)}</td>
+      <td>${booking.gcashNumber || '-'}</td>
+      <td>${booking.gcashRef || '-'}</td>
       <td>
         <span class="booking__status status__${booking.status}">
           ${booking.status}
@@ -213,6 +215,8 @@ function openBookingModal(bookingId) {
   document.getElementById("modalCheckIn").textContent = formatDate(booking.checkIn);
   document.getElementById("modalCheckOut").textContent = formatDate(booking.checkOut);
   document.getElementById("modalPrice").textContent = booking.totalPrice;
+  document.getElementById("modalGcashNumber").textContent = booking.gcashNumber || '-';
+  document.getElementById("modalGcashRef").textContent = booking.gcashRef || '-';
   document.getElementById("modalRequests").textContent = booking.requests || "No special requests";
   document.getElementById("modalStatus").value = booking.status;
 
@@ -299,7 +303,9 @@ function sendBookingEmail(booking) {
     check_out: formatDate(booking.checkOut),
     guests: booking.guests,
     total_price: booking.totalPrice,
-    special_requests: booking.requests || "None"
+    special_requests: booking.requests || "None",
+    gcash_number: booking.gcashNumber || "0917-123-4567",
+    gcash_ref: booking.gcashRef || "N/A"
   };
 
   console.log('📧 Template params being sent:', JSON.stringify(templateParams, null, 2));
@@ -367,9 +373,9 @@ function deleteBookingDirect(bookingId) {
 
 function exportBookingsData() {
   const buildAndDownload = (rows) => {
-    let csvContent = "Booking ID,Guest Name,Email,Phone,Room Type,Check-in,Check-out,Guests,Status,Special Requests\n";
+    let csvContent = "Booking ID,Guest Name,Email,Phone,Room Type,Check-in,Check-out,GCash Number,Reference Number,Guests,Status,Special Requests\n";
     rows.forEach(booking => {
-      csvContent += `"${booking.id}","${booking.guestName}","${booking.email}","${booking.phone}","${formatRoomType(booking.roomType)}","${booking.checkIn}","${booking.checkOut}","${booking.guests}","${booking.status}","${booking.requests || ''}"\n`;
+      csvContent += `"${booking.id}","${booking.guestName}","${booking.email}","${booking.phone}","${formatRoomType(booking.roomType)}","${booking.checkIn}","${booking.checkOut}","${booking.gcashNumber || ''}","${booking.gcashRef || ''}","${booking.guests}","${booking.status}","${booking.requests || ''}"\n`;
     });
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });

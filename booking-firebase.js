@@ -15,7 +15,7 @@ function saveLocalBooking(bookingData) {
   return id;
 }
 
-function createBookingData(guestName, email, phone, checkIn, checkOut, guests, roomType, requests, nights, pricePerNight, totalPrice) {
+function createBookingData(guestName, email, phone, checkIn, checkOut, guests, roomType, requests, gcashNumber, gcashRef, nights, pricePerNight, totalPrice) {
   return {
     guestName,
     email,
@@ -25,6 +25,8 @@ function createBookingData(guestName, email, phone, checkIn, checkOut, guests, r
     guests,
     roomType,
     requests,
+    gcashNumber,
+    gcashRef,
     nights,
     pricePerNight,
     totalPrice,
@@ -76,6 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const guests = document.getElementById('guests').value;
     const roomType = document.getElementById('room-type').value;
     const requests = document.getElementById('requests').value.trim();
+    const gcashNumber = document.getElementById('gcash-number').value.trim();
+    const gcashRef = document.getElementById('gcash-ref').value.trim();
 
     const nights = calcNights(checkIn, checkOut);
     const pricePerNight = parsePriceForRoom(roomType);
@@ -88,6 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('reviewRoomType').textContent = roomType || '-';
       document.getElementById('reviewCheckIn').textContent = checkIn || '-';
       document.getElementById('reviewCheckOut').textContent = checkOut || '-';
+      document.getElementById('reviewGcashNumber').textContent = gcashNumber || '-';
+      document.getElementById('reviewGcashRef').textContent = gcashRef || '-';
       document.getElementById('reviewNights').textContent = nights || 0;
       document.getElementById('reviewPricePerNight').textContent = pricePerNight ? `P${pricePerNight}` : '-';
       document.getElementById('reviewTotalPrice').textContent = totalPrice ? `P${totalPrice}` : '-';
@@ -110,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
           submitBtn.textContent = 'Submitting...';
         }
 
-        const data = createBookingData(guestName, email, phone, checkIn, checkOut, guests, roomType, requests, nights, pricePerNight, totalPrice);
+        const data = createBookingData(guestName, email, phone, checkIn, checkOut, guests, roomType, requests, gcashNumber, gcashRef, nights, pricePerNight, totalPrice);
         const isFileProtocol = window.location.protocol === 'file:';
 
         const fallback = () => {
@@ -136,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => reject(new Error('Connection timeout - saving locally')), 5000)
           );
           const bookingRef = await Promise.race([submissionPromise, timeoutPromise]);
-          alert('Booking submitted to Firebase! Reference ID: ' + bookingRef.key);
+          alert(`🎉 Booking Confirmed!\n\nThank you for choosing Kamayan Beach Resort.\n\nYour booking has been successfully submitted.\nReference ID: ${bookingRef.key}\n\nYou will receive a confirmation email shortly with all the details.\n\nWe look forward to welcoming you!`);
           form.reset();
           reviewModal.style.display = 'none';
         } catch (err) {

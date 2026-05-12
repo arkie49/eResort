@@ -97,6 +97,14 @@
               <label for="requests">Special Requests</label>
               <textarea id="requests" placeholder="Any special requests? (e.g., high floor, late checkout...)"></textarea>
             </div>
+            <div class="input__group">
+              <label for="gcash-number">GCash Payment Number</label>
+              <input type="text" id="gcash-number" value="0917-123-4567" readonly />
+            </div>
+            <div class="input__group">
+              <label for="gcash-ref">GCash Reference Number *</label>
+              <input type="text" id="gcash-ref" placeholder="Enter your GCash transaction reference" required />
+            </div>
             <button class="btn" type="submit" id="booking-submit-btn">Complete Booking</button>
           </form>
         </div>
@@ -111,6 +119,8 @@
                 <p><strong>Room:</strong> <span id="reviewRoomType">-</span></p>
                 <p><strong>Check-in:</strong> <span id="reviewCheckIn">-</span></p>
                 <p><strong>Check-out:</strong> <span id="reviewCheckOut">-</span></p>
+                <p><strong>GCash Number:</strong> <span id="reviewGcashNumber">-</span></p>
+                <p><strong>Reference Number:</strong> <span id="reviewGcashRef">-</span></p>
                 <p><strong>Nights:</strong> <span id="reviewNights">-</span></p>
                 <p><strong>Price / night:</strong> <span id="reviewPricePerNight">-</span></p>
                 <p><strong>Total Price:</strong> <span id="reviewTotalPrice">-</span></p>

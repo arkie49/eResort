@@ -138,6 +138,14 @@
                     <td class="label">Guests</td>
                     <td class="value">{{guests}}</td>
                 </tr>
+                <tr>
+                    <td class="label">GCash Number</td>
+                    <td class="value">{{gcash_number}}</td>
+                </tr>
+                <tr>
+                    <td class="label">Reference Number</td>
+                    <td class="value">{{gcash_ref}}</td>
+                </tr>
             </table>
         </div>
 
