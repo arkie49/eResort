@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const nights = calcNights(checkIn, checkOut);
     const pricePerNight = parsePriceForRoom(roomType);
-    const totalPrice = nights * pricePerNight;
+    const totalPrice = nights * pricePerNight * parseInt(guests);
 
     if (reviewModal) {
       document.getElementById('reviewGuestName').textContent = guestName || '-';
