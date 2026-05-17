@@ -138,14 +138,6 @@
                     <td class="label">Guests</td>
                     <td class="value">{{guests}}</td>
                 </tr>
-                <tr>
-                    <td class="label">GCash Number</td>
-                    <td class="value">{{gcash_number}}</td>
-                </tr>
-                <tr>
-                    <td class="label">Reference Number</td>
-                    <td class="value">{{gcash_ref}}</td>
-                </tr>
             </table>
         </div>
 
@@ -157,6 +149,14 @@
         </div>
 
         <div class="note">
+            <strong>Payment Instructions:</strong><br>
+            Please transfer the total amount to the resort's GCash number: <strong>{{gcash_number}}</strong><br><br>
+            After completing the transaction, reply to this email with:
+            <ul>
+                <li>A screenshot of the payment receipt</li>
+                <li>Your GCash transaction reference number</li>
+            </ul>
+            This will help us confirm your booking immediately.<br><br>
             Please plan to arrive by 3:00 PM on your check-in date. If you expect to arrive later, let us know in advance.
         </div>
 

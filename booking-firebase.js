@@ -31,6 +31,7 @@ function createBookingData(guestName, email, phone, checkIn, checkOut, guests, r
     pricePerNight,
     totalPrice,
     status: 'pending',
+    isPaid: false,
     createdAt: firebaseTimestamp ? firebaseTimestamp() : Date.now()
   };
 }

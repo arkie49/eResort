@@ -59,8 +59,8 @@ function logoutAdmin() {
 }
 
 const SAMPLE_BOOKINGS = [
-  { id: "BK001", guestName: "Juan ", email: "juan@email.com", phone: "09123456789", roomType: "deluxe", checkIn: "2024-03-10", checkOut: "2024-03-12", guests: 2, totalPrice: "P1,398", status: "confirmed", requests: "Late check-in requested.", gcashNumber: "0917-123-4567", gcashRef: "REF123456" },
-  { id: "BK002", guestName: "Maria Santos", email: "maria@email.com", phone: "09234567890", roomType: "standard", checkIn: "2024-03-15", checkOut: "2024-03-17", guests: 1, totalPrice: "P998", status: "pending", requests: "None", gcashNumber: "0917-987-6543", gcashRef: "REF789012" }
+  { id: "BK001", guestName: "Juan ", email: "juan@email.com", phone: "09123456789", roomType: "deluxe", checkIn: "2024-03-10", checkOut: "2024-03-12", guests: 2, totalPrice: "P1,398", status: "confirmed", isPaid: true, requests: "Late check-in requested.", gcashNumber: "0917-123-4567", gcashRef: "REF123456" },
+  { id: "BK002", guestName: "Maria Santos", email: "maria@email.com", phone: "09234567890", roomType: "standard", checkIn: "2024-03-15", checkOut: "2024-03-17", guests: 1, totalPrice: "P998", status: "pending", isPaid: false, requests: "None", gcashNumber: "0917-987-6543", gcashRef: "REF789012" }
 ];
 
 let bookingsData = SAMPLE_BOOKINGS.slice();
@@ -112,6 +112,7 @@ const saveChanges = document.getElementById("saveChanges");
 const deleteBooking = document.getElementById("deleteBooking");
 const exportBookings = document.getElementById("exportBookings");
 const confirmBookingEmailBtn = document.getElementById("confirmBookingEmail");
+const markPaidBtn = document.getElementById("markPaidBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 
 let currentBooking = null;
@@ -139,6 +140,9 @@ function setupEventListeners() {
   if (confirmBookingEmailBtn) {
     confirmBookingEmailBtn.addEventListener("click", confirmBookingAndEmail);
   }
+  if (markPaidBtn) {
+    markPaidBtn.addEventListener("click", markBookingAsPaid);
+  }
   if (logoutBtn) {
     logoutBtn.addEventListener("click", logoutAdmin);
   }
@@ -147,7 +151,7 @@ function setupEventListeners() {
 
 function renderBookingsTable(bookings) {
   if (bookings.length === 0) {
-    bookingsTableBody.innerHTML = '<tr><td colspan="11" style="text-align: center; padding: 2rem; color: var(--text-light);">No bookings found</td></tr>';
+    bookingsTableBody.innerHTML = '<tr><td colspan="12" style="text-align: center; padding: 2rem; color: var(--text-light);">No bookings found</td></tr>';
     return;
   }
 
@@ -165,6 +169,11 @@ function renderBookingsTable(bookings) {
       <td>
         <span class="booking__status status__${booking.status}">
           ${booking.status}
+        </span>
+      </td>
+      <td>
+        <span class="booking__payment ${booking.isPaid ? 'paid' : 'unpaid'}" style="padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">
+          ${booking.isPaid ? '✓ Paid' : 'Unpaid'}
         </span>
       </td>
       <td>
@@ -217,6 +226,8 @@ function openBookingModal(bookingId) {
   document.getElementById("modalPrice").textContent = booking.totalPrice;
   document.getElementById("modalGcashNumber").textContent = booking.gcashNumber || '-';
   document.getElementById("modalGcashRef").textContent = booking.gcashRef || '-';
+  document.getElementById("modalPaymentStatus").textContent = booking.isPaid ? '✓ Paid' : 'Unpaid';
+  document.getElementById("modalPaymentStatus").style.color = booking.isPaid ? '#10b981' : '#ef4444';
   document.getElementById("modalRequests").textContent = booking.requests || "No special requests";
   document.getElementById("modalStatus").value = booking.status;
 
@@ -319,6 +330,39 @@ function sendBookingEmail(booking) {
       console.error('Failed to send email:', error);
       alert('Booking confirmed, but email delivery failed.\nPlease try again or contact customer manually.');
     });
+}
+
+function markBookingAsPaid() {
+  if (!currentBooking) return;
+  const bookingId = currentBooking.id;
+  const newPaidStatus = !currentBooking.isPaid;
+
+  const applyLocalUpdate = () => {
+    const idx = bookingsData.findIndex(b => b.id === bookingId);
+    if (idx !== -1) {
+      bookingsData[idx].isPaid = newPaidStatus;
+      openBookingModal(bookingId);
+      filterBookings();
+    }
+  };
+
+  const statusMessage = newPaidStatus ? 'marked as paid' : 'marked as unpaid';
+
+  if (database && bookingId) {
+    update(ref(database, `bookings/${bookingId}`), { isPaid: newPaidStatus })
+      .then(() => {
+        applyLocalUpdate();
+        alert(`Booking ${bookingId} has been ${statusMessage}.`);
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Failed to update payment status.');
+      });
+    return;
+  }
+
+  applyLocalUpdate();
+  alert(`Booking ${bookingId} has been ${statusMessage}.`);
 }
 
 function removeBooking() {

@@ -66,6 +66,7 @@
               <th>GCash Number</th>
               <th>Reference</th>
               <th>Status</th>
+              <th>Payment Status</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -107,6 +108,7 @@
             <h3>Payment Info</h3>
             <p><strong>GCash Number:</strong> <span id="modalGcashNumber">-</span></p>
             <p><strong>Reference Number:</strong> <span id="modalGcashRef">-</span></p>
+            <p><strong>Payment Status:</strong> <span id="modalPaymentStatus" style="font-weight: 600;">-</span></p>
           </div>
 
           <div class="modal__section">
@@ -126,6 +128,7 @@
 
         <div class="modal__actions">
           <button id="saveChanges" class="btn btn__primary">Save Changes</button>
+          <button id="markPaidBtn" class="btn btn__primary">Mark as Paid</button>
           <button id="confirmBookingEmail" class="btn btn__primary">Confirm &amp; Email</button>
           <button id="deleteBooking" class="btn btn__danger">Delete</button>
           <button id="closeModalBtn" class="btn btn__secondary">Close</button>
