@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Book Your Stay - eResort</title>
+  </head>
+  <body>
+    <nav>
+      <div class="nav__bar">
+        <div class="nav__header">
+          <div class="logo nav__logo">
+            <div>KBR</div>
+            <span>eResort<br />KAMAYAN BEACH RESORT</span>
+          </div>
+          <div class="nav__menu__btn" id="menu-btn">
+            <i class="ri-menu-line"></i>
+          </div>
+        </div>
+        <ul class="nav__links" id="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="room.html">Rooms</a></li>
+          <li><a href="booking.html">Booking</a></li>
+          <li><a href="index.html#feature">Features</a></li>
+          <li><a href="index.html#news">News</a></li>
+          <li><a href="admin.html">Admin</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <header class="header booking__header" id="booking-header">
+      <div class="section__container header__container">
+        <p class="section__subheader">SECURE YOUR DATES</p>
+        <h1>Book Your Perfect<br />Getaway</h1>
+        <p class="section__description" style="color: var(--white); max-width: 600px;">
+          Reserve your room with ease and enjoy exclusive benefits. Our flexible booking options ensure your comfort and peace of mind.
+        </p>
+      </div>
+    </header>
+
+    <section class="booking booking__page">
+      <div class="section__container booking__container">
+        <div class="booking__form__wrapper" id="booking-form">
+          <h2>Complete Booking</h2>
+          <div class="booking__form__overlay" id="booking-loading">
+            <div class="booking__spinner"></div>
+            <p>Submitting your booking...</p>
+          </div>
+          <form action="/">
+            <div class="input__group">
+              <label for="name">Full Name *</label>
+              <input type="text" id="name" placeholder="Your Full Name" required />
+            </div>
+            <div class="input__group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" placeholder="your@email.com" required />
+            </div>
+            <div class="input__group">
+              <label for="phone">Phone Number *</label>
+              <input type="tel" id="phone" placeholder="+63 9XXXXXXXXX" required />
+            </div>
+            <div class="input__group">
+              <label for="arrival">Arrival Date *</label>
+              <input type="date" id="arrival" required />
+            </div>
+            <div class="input__group">
+              <label for="departure">Departure Date *</label>
+              <input type="date" id="departure" required />
+            </div>
+            <div class="input__group">
+              <label for="guests">Number of Guests *</label>
+              <select id="guests" required>
+                <option value="">Select Number of Guests</option>
+                <option value="1">1 Guest</option>
+                <option value="2">2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4">4 Guests</option>
+                <option value="5">5+ Guests</option>
+              </select>
+            </div>
+            <div class="input__group">
+              <label for="room-type">Room Type *</label>
+              <select id="room-type" required>
+                <option value="">Select Room Type</option>
+                <option value="standard">Standard Room</option>
+                <option value="deluxe">Deluxe Room</option>
+                <option value="family">Family Room / Barkada Suite</option>
+              </select>
+            </div>
+            <div class="input__group">
+              <label for="requests">Special Requests</label>
+              <textarea id="requests" placeholder="Any special requests? (e.g., high floor, late checkout...)"></textarea>
+            </div>
+            <div class="input__group">
+              <label for="gcash-number">GCash Payment Number</label>
+              <input type="text" id="gcash-number" value="0917-123-4567" readonly />
+            </div>
+            <div class="input__group">
+              <label for="gcash-ref">GCash Reference Number *</label>
+              <input type="text" id="gcash-ref" placeholder="Enter your GCash transaction reference" required />
+            </div>
+            <button class="btn" type="submit" id="booking-submit-btn">Complete Booking</button>
+          </form>
+        </div>
+          <!-- Booking Review Modal -->
+          <div id="booking-review-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:50; align-items:center; justify-content:center;">
+            <div style="background:#fff; max-width:520px; width:95%; margin:auto; border-radius:8px; padding:1.25rem;">
+              <h3 style="margin-top:0;">Review Your Booking</h3>
+              <div style="margin-bottom:0.5rem; color:#333;">
+                <p><strong>Name:</strong> <span id="reviewGuestName">-</span></p>
+                <p><strong>Email:</strong> <span id="reviewEmail">-</span></p>
+                <p><strong>Phone:</strong> <span id="reviewPhone">-</span></p>
+                <p><strong>Room:</strong> <span id="reviewRoomType">-</span></p>
+                <p><strong>Check-in:</strong> <span id="reviewCheckIn">-</span></p>
+                <p><strong>Check-out:</strong> <span id="reviewCheckOut">-</span></p>
+                <p><strong>GCash Number:</strong> <span id="reviewGcashNumber">-</span></p>
+                <p><strong>Reference Number:</strong> <span id="reviewGcashRef">-</span></p>
+                <p><strong>Nights:</strong> <span id="reviewNights">-</span></p>
+                <p><strong>Price per night per guest:</strong> <span id="reviewPricePerNight">-</span></p>
+                <p><strong>Total Price:</strong> <span id="reviewTotalPrice">-</span></p>
+              </div>
+              <div style="display:flex; gap:0.5rem; justify-content:flex-end; margin-top:1rem;">
+                <button class="btn btn__secondary" id="booking-edit-btn">Edit</button>
+                <button class="btn" id="booking-confirm-btn">Confirm & Submit</button>
+              </div>
+            </div>
+          </div>
+      </div>
+    </section>
+
+    <section class="booking__info">
+      <div class="section__container">
+        <p class="section__subheader">BOOKING INFORMATION</p>
+        <h2 class="section__header">How to Book</h2>
+        <div class="booking__steps">
+          <div class="step__card">
+            <div class="step__number">1</div>
+            <h4>Select Your Dates</h4>
+            <p>Choose your arrival and departure dates using our easy-to-use calendar interface.</p>
+          </div>
+          <div class="step__card">
+            <div class="step__number">2</div>
+            <h4>Pick Your Room</h4>
+            <p>Browse our selection of luxurious rooms and suites tailored to your preferences and budget.</p>
+          </div>
+          <div class="step__card">
+            <div class="step__number">3</div>
+            <h4>Review & Confirm</h4>
+            <p>Double-check your booking details, special requests, and confirm your reservation.</p>
+          </div>
+          <div class="step__card">
+            <div class="step__number">4</div>
+            <h4>Complete Payment</h4>
+            <p>Secure your booking with our flexible payment options and receive instant confirmation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="room__container booking__featured">
+      <p class="section__subheader">POPULAR CHOICES</p>
+      <h2 class="section__header">Featured Rooms</h2>
+      <div class="room__grid">
+        <div class="room__card">
+          <img src="assets/standard room.jpg" alt="Standard Room" />
+          <div class="room__card__details">
+            <h4>Standard Room (The "Essentials" Stay)</h4>
+            <p>The most budget-friendly option, usually located in a main building or a row of concrete units slightly back from the shore.</p>
+            <h3>P499<span>/night</span></h3>
+          </div>
+          <div class="room__card__footer">
+            <a href="room.html"><button class="btn" id="view-standard-btn" data-action="view-details" data-room="standard">View Details</button></a>
+          </div>
+        </div>
+        <div class="room__card">
+          <img src="assets/deluxe room.jpg" alt="Deluxe Room" />
+          <div class="room__card__details">
+            <h4>Deluxe Room (The Mid-Tier Upgrade)</h4>
+            <p>Slightly more spacious than the Standard, often with better views or closer proximity to the pool/beach.</p>
+            <h3>P699<span>/night</span></h3>
+          </div>
+          <div class="room__card__footer">
+            <a href="room.html"><button class="btn" id="view-deluxe-btn" data-action="view-details" data-room="deluxe">View Details</button></a>
+          </div>
+        </div>
+        <div class="room__card">
+          <img src="assets/barkada room.jpg" alt="Family Room / Barkada Suite" />
+          <div class="room__card__details">
+            <h4>Family Room / Barkada Suite</h4>
+            <p>Since Filipino travel culture is very group-oriented, entry-level resorts almost always have "Barkada" (peer group) rooms.</p>
+            <h3>P799-P999<span>/night</span></h3>
+          </div>
+          <div class="room__card__footer">
+            <a href="room.html"><button class="btn" id="view-family-btn" data-action="view-details" data-room="family">View Details</button></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="booking__benefits">
+      <div class="section__container">
+        <p class="section__subheader">WHY BOOK WITH US</p>
+        <h2 class="section__header">Booking Benefits</h2>
+        <div class="benefits__grid">
+          <div class="benefit__card">
+            <span><i class="ri-shield-check-line"></i></span>
+            <h4>Best Price Guarantee</h4>
+            <p>Book directly and enjoy our best rates. If you find a lower price elsewhere, we'll match it.</p>
+          </div>
+          <div class="benefit__card">
+            <span><i class="ri-close-circle-line"></i></span>
+            <h4>Free Cancellation</h4>
+            <p>Plans change? Cancel your reservation free of charge up to 7 days before arrival.</p>
+          </div>
+          <div class="benefit__card">
+            <span><i class="ri-wallet-line"></i></span>
+            <h4>Multiple Payment Options</h4>
+            <p>Pay with credit cards, digital wallets, or bank transfers. Choose what works best for you.</p>
+          </div>
+          <div class="benefit__card">
+            <span><i class="ri-phone-line"></i></span>
+            <h4>24/7 Support</h4>
+            <p>Need help? Our support team is available around the clock to assist you.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta__section">
+      <div class="section__container">
+        <div class="cta__content">
+          <p class="section__subheader">SPECIAL OFFERS</p>
+          <h2 class="section__header">Exclusive Deals for You</h2>
+          <p class="section__description">
+            Save up to 20% on your stay when you book 30 days in advance. Use code: EARLY20 at checkout.
+          </p>
+          <a class="btn" href="#booking-form" id="cta-book-btn" data-action="book-now">Book Now</a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="section__container footer__container">
+        <div class="footer__col">
+          <div class="logo footer__logo">
+            <div>KBR</div>
+            <span>eResort<br />KAMAYAN BEACH RESORT</span>
+          </div>
+          <p class="section__description">
+            "At Kamayan, we don’t just offer a room; we offer a seat at the table of the elements. Come as a guest, leave as part of the tides."
+          </p>
+          <ul class="footer__socials">
+            <li>
+              <a href="#"><i class="ri-youtube-fill"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="ri-instagram-line"></i></a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/KamayanPenthouseBeachResort"><i class="ri-facebook-fill"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="ri-linkedin-fill"></i></a>
+            </li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Services</h4>
+          <div class="footer__links">
+            <li><a href="#">Online Booking</a></li>
+            <li><a href="#">Special Offers</a></li>
+            <li><a href="#">Customer Support</a></li>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h4>Contact Us</h4>
+          <div class="footer__links">
+            <li>
+              <span><i class="ri-phone-fill"></i></span>
+              <div>
+                <h5>Phone Number</h5>
+                <p>09088124538
+                  09171692377
+                </p>
+              </div>
+            </li>
+            <li>
+              <span><i class="ri-record-mail-line"></i></span>
+              <div>
+                <h5>Email</h5>
+                <p>info@kamayanBR.com</p>
+              </div>
+            </li>
+            <li>
+              <span><i class="ri-map-pin-2-fill"></i></span>
+              <div>
+                <h5>Location</h5>
+                <p>HGXP+JQR kamayan beach resort, Roxas, Oriental Mindoro</p>
+              </div>
+            </li>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bar">
+        Copyright © 2026 eResort. All rights reserved.
+      </div>
+    </footer>
+
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="main.js"></script>
+    <script type="module" src="firebase.js"></script>
+    <script type="module" src="booking-firebase.js"></script>
+  </body>
+</html>

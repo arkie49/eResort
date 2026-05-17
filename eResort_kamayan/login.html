@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login | Kamayan Beach Resort</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.css" rel="stylesheet" />
+  <style>
+    .login-page {
+      min-height: 100vh;
+      background-image: linear-gradient(
+          rgba(15, 26, 44, 0.7),
+          rgba(15, 26, 44, 0.7)
+        ),
+        url("assets/logo kamayan.jpg");
+      background-position: center center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-family: "Poppins", sans-serif;
+    }
+
+    .login-container {
+      background: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      padding: 40px;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
+
+    .login-logo {
+      margin-bottom: 30px;
+    }
+
+    .login-logo h1 {
+      color: var(--primary-color);
+      font-size: 32px;
+      font-weight: 800;
+      font-family: var(--header-font);
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+
+    .login-logo p {
+      color: var(--text-light);
+      font-size: 16px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .login-form {
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-dark);
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2px solid #e1e8ed;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: "Poppins", sans-serif;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+      background: var(--extra-light);
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(246, 172, 15, 0.1);
+    }
+
+    .form-group input::placeholder {
+      color: var(--text-light);
+    }
+
+    .login-error {
+      background: #fee;
+      color: #c0392b;
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      display: none;
+      font-size: 14px;
+      font-weight: 500;
+      border-left: 4px solid #e74c3c;
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 16px;
+      background-color: var(--secondary-color);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: "Poppins", sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .login-btn:hover {
+      background-color: #e59e0f;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(246, 172, 15, 0.3);
+    }
+
+    .login-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .back-link {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid #e1e8ed;
+    }
+
+    .back-link a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .back-link a:hover {
+      color: var(--secondary-color);
+    }
+
+    .back-link a i {
+      font-size: 16px;
+    }
+
+    /* Responsive design */
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 30px 24px;
+        margin: 20px;
+        max-width: none;
+      }
+
+      .login-logo h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body class="login-page">
+  <div class="login-container">
+    <div class="login-logo">
+      <h1>Kamayan Beach Resort</h1>
+      <p>Admin Dashboard</p>
+    </div>
+
+    <div class="login-error" id="loginError"></div>
+
+    <form class="login-form" id="adminLoginForm">
+      <div class="form-group">
+        <label for="adminUsername">Username</label>
+        <input type="text" id="adminUsername" autocomplete="username" placeholder="Enter your username" required />
+      </div>
+
+      <div class="form-group">
+        <label for="adminPassword">Password</label>
+        <input type="password" id="adminPassword" autocomplete="current-password" placeholder="Enter your password" required />
+      </div>
+
+      <button type="submit" class="login-btn" id="loginBtn">
+        <i class="ri-login-circle-line" style="margin-right: 8px;"></i>
+        Sign In
+      </button>
+    </form>
+
+    <div class="back-link">
+      <a href="index.html">
+        <i class="ri-arrow-left-line"></i>
+        Back to Home
+      </a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const loginForm = document.getElementById("adminLoginForm");
+      const usernameInput = document.getElementById("adminUsername");
+      const passwordInput = document.getElementById("adminPassword");
+      const errorDiv = document.getElementById("loginError");
+      const loginBtn = document.getElementById("loginBtn");
+
+      // Check if already authenticated
+      if (localStorage.getItem("adminAuth") === "true") {
+        window.location.href = "admin.html";
+        return;
+      }
+
+      loginForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Signing in...";
+
+        // Simple authentication (in production, use proper authentication)
+        if (username === "admin" && password === "admin123") {
+          localStorage.setItem("adminAuth", "true");
+          window.location.href = "admin.html";
+        } else {
+          errorDiv.textContent = "Invalid username or password. Please try again.";
+          errorDiv.style.display = "block";
+          loginBtn.disabled = false;
+          loginBtn.textContent = "Sign In";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
